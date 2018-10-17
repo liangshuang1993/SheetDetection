@@ -1,0 +1,11 @@
+import os
+
+DATASETS = '/datasets/ctpn/TEXTVOC/VOC2007/'
+images = os.listdir(os.path.join(DATASETS, 'JPEGImages'))
+
+with open(os.path.join(DATASETS, 'ImageSets/Main/trainval.txt'), 'w') as f:
+    for image in images:
+        if '.jpg' not in image:
+            print image
+        else:
+            f.write(image.strip('.jpg') + '\n')

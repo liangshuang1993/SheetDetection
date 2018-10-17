@@ -1,0 +1,70 @@
+2018-07-15 10:57:36.261120: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2018-07-15 10:57:37.394185: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1212] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:58:00.0
+totalMemory: 15.90GiB freeMemory: 15.61GiB
+2018-07-15 10:57:37.394238: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1312] Adding visible gpu devices: 0
+2018-07-15 10:57:37.691317: I tensorflow/core/common_runtime/gpu/gpu_device.cc:993] Creating TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15133 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:58:00.0, compute capability: 6.0)
+Using TensorFlow backend.
+2018-07-15 10:57:38.027381: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1312] Adding visible gpu devices: 0
+2018-07-15 10:57:38.027574: I tensorflow/core/common_runtime/gpu/gpu_device.cc:993] Creating TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 570 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:58:00.0, compute capability: 6.0)
+Tensor("Placeholder:0", shape=(?, ?, ?, 3), dtype=float32)
+Tensor("conv5_3/conv5_3:0", shape=(?, ?, ?, 512), dtype=float32)
+Tensor("rpn_conv/3x3/rpn_conv/3x3:0", shape=(?, ?, ?, 512), dtype=float32)
+Tensor("lstm_o/Reshape_2:0", shape=(?, ?, ?, 512), dtype=float32)
+Tensor("lstm_o/Reshape_2:0", shape=(?, ?, ?, 512), dtype=float32)
+Tensor("rpn_cls_score/Reshape_1:0", shape=(?, ?, ?, 20), dtype=float32)
+Tensor("rpn_cls_prob:0", shape=(?, ?, ?, ?), dtype=float32)
+Tensor("Reshape_2:0", shape=(?, ?, ?, 20), dtype=float32)
+Tensor("rpn_bbox_pred/Reshape_1:0", shape=(?, ?, ?, 40), dtype=float32)
+Tensor("Placeholder_1:0", shape=(?, 3), dtype=float32)
+load vggnet done
+('nclass:', 456)
+It takes time:13.2964270115s
+---------------------------------------
+It takes time:11.6034209728s
+---------------------------------------
+It takes time:21.1641199589s
+---------------------------------------
+It takes time:14.1786770821s
+---------------------------------------
+It takes time:16.0031709671s
+---------------------------------------
+It takes time:14.3104760647s
+---------------------------------------
+It takes time:14.7377798557s
+---------------------------------------
+It takes time:12.6458730698s
+---------------------------------------
+It takes time:34.6736638546s
+---------------------------------------
+It takes time:12.4461400509s
+---------------------------------------
+It takes time:36.9856801033s
+---------------------------------------
+It takes time:37.5428650379s
+---------------------------------------
+It takes time:39.7168250084s
+---------------------------------------
+It takes time:15.9649188519s
+---------------------------------------
+It takes time:16.6125199795s
+---------------------------------------
+It takes time:24.5682139397s
+---------------------------------------
+It takes time:46.3524000645s
+---------------------------------------
+It takes time:52.3540160656s
+---------------------------------------
+It takes time:50.3955430984s
+---------------------------------------
+It takes time:57.2604959011s
+---------------------------------------
+It takes time:58.838960886s
+---------------------------------------
+It takes time:39.9787991047s
+---------------------------------------
+It takes time:25.3702571392s
+---------------------------------------
+It takes time:56.3789000511s
+---------------------------------------
