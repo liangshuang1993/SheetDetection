@@ -42,15 +42,26 @@ class TextAreas():
             self.slope_median = (self.get_slope(self.text_areas_slope[idx]) + self.get_slope(self.text_areas_slope[idx + 1])) * 0.5
             self.width_median = (self.get_width(self.text_areas_width[idx]) + self.get_width(self.text_areas_width[idx + 1])) * 0.5
 
-    def get_x(self, text_area):
+    @staticmethod
+    def get_x(text_area):
         return text_area[0]
-    def get_y(self, text_area):
+
+    def get_x_of(self, type, idx):
+        if type == 'x':
+            return self.text_areas_x[idx][0]
+
+
+    @staticmethod
+    def get_y(text_area):
         return text_area[1]
-    def get_width(self, text_area):
+    @staticmethod
+    def get_width(text_area):
         return text_area[2] - text_area[0]
-    def get_height(self, text_area):
+    @staticmethod
+    def get_height(text_area):
         return text_area[5] - text_area[1]
-    def get_slope(self, text_area):
+    @staticmethod
+    def get_slope(text_area):
         return (text_area[3] - text_area[1]) * 1.0 / (text_area[2] - text_area[0])
 
     def text_area_features(self, text_area):
