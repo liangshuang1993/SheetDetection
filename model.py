@@ -80,10 +80,10 @@ def crnnRec(imname, im, text_recs, ocrMode='keras', adjust=False):
 
         partImg = dumpRotateImage(im, degree, pt1, pt2, pt3, pt4)
 
-        min_x = min(rec[0], rec[2], rec[4], rec[6], 0)
-        min_y = min(rec[1], rec[3], rec[5], rec[7], 0)
-        max_x = max(rec[0], rec[2], rec[4], rec[6])
-        max_y = max(rec[1], rec[3], rec[5], rec[7])
+        min_x = min(rec[0], rec[2], rec[4], rec[6])
+        min_y = min(rec[1], rec[3], rec[5], rec[7])
+        max_x = max(rec[0], rec[2], rec[4], rec[6], 0)
+        max_y = max(rec[1], rec[3], rec[5], rec[7], 0)
         partImg = im[min_y: max_y, min_x: max_x, :]
         try:
             # 根据ctpn进行识别出的文字区域，进行不同文字区域的crnn识别
