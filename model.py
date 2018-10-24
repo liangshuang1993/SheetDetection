@@ -9,6 +9,8 @@ import numpy as np
 from PIL import Image
 import sys
 import copy
+import json
+
 
 sys.path.append("crnn")
 # from angle.predict import predict as angle_detect  ##文字方向检测
@@ -78,8 +80,8 @@ def crnnRec(imname, im, text_recs, ocrMode='keras', adjust=False):
 
         partImg = dumpRotateImage(im, degree, pt1, pt2, pt3, pt4)
 
-        min_x = min(rec[0], rec[2], rec[4], rec[6])
-        min_y = min(rec[1], rec[3], rec[5], rec[7])
+        min_x = min(rec[0], rec[2], rec[4], rec[6], 0)
+        min_y = min(rec[1], rec[3], rec[5], rec[7], 0)
         max_x = max(rec[0], rec[2], rec[4], rec[6])
         max_y = max(rec[1], rec[3], rec[5], rec[7])
         partImg = im[min_y: max_y, min_x: max_x, :]
@@ -184,13 +186,19 @@ def model(index, im_name, img, model='keras', adjust=True, recheck_flag=True):
     text_size = 20
     ft = draw.put_chinese_text('/datasets/text_renderer/data/fonts/chn/songti.ttf')
     f_result = open('results/{}.txt'.format(im_name), 'w')
+    f_json = open('results/{}.json'.format(im_name.split('.')[0]), 'w')
+    result_dict = []
     for result in results.items():
         box, b = result[1]
         pos = (box[0], box[1])
+        print b[0]
+        #print box
         new_img = ft.draw_text(new_img, pos, b[0], text_size, color_)
-        f_result.write('{}  {}, {} \n'.format(b[0], pos[0], pos[1]))
+        #f_result.write('{}  {}, {} \n'.format(b[0], pos[0], pos[1]))
+        result_dict.append([box[0], box[1], box[2]-box[0], box[5] - box[3], b[0]])
     cv2.imwrite(os.path.join(RESULTS, im_name), new_img)      
-    
+    f_json.write(json.dumps(result_dict, ensure_ascii=False))    
+ 
     return
 
 
