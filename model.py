@@ -28,7 +28,7 @@ if os.path.exists(RESULTS):
 os.makedirs(RESULTS)
 os.makedirs(RESULTS_CTPN)
 
-IMAGE_SIZE = np.array((3000, 4000, 3), dtype=np.int32)
+IMAGE_SIZE = np.array((400, 600, 3), dtype=np.int32)
 
 def ruihua(image):
     kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], np.float32) #锐化
@@ -80,8 +80,8 @@ def crnnRec(imname, im, text_recs, ocrMode='keras', adjust=False):
 
         partImg = dumpRotateImage(im, degree, pt1, pt2, pt3, pt4)
 
-        min_x = min(rec[0], rec[2], rec[4], rec[6])
-        min_y = min(rec[1], rec[3], rec[5], rec[7])
+        min_x = max(min(rec[0], rec[2], rec[4], rec[6]), 0)
+        min_y = max(min(rec[1], rec[3], rec[5], rec[7]), 0)
         max_x = max(rec[0], rec[2], rec[4], rec[6], 0)
         max_y = max(rec[1], rec[3], rec[5], rec[7], 0)
         partImg = im[min_y: max_y, min_x: max_x, :]
