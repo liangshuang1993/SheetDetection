@@ -33,8 +33,8 @@ class PostProcess():
         seperator.append(len(text_areas.text_areas))
 
         base_x = -1
-        ft = draw.put_chinese_text('/datasets/text_renderer/data/fonts/chn/songti.ttf')
-        new_img = np.ones((1000, 4000, 3)) * 255
+        ft = draw.put_chinese_text('fonts/msyh.ttc')
+        new_img = np.ones((3000, 3000, 3)) * 255
         color_ = (0,0,0)
         text_size = 20
         for i in range(1, len(seperator)):
@@ -49,15 +49,38 @@ class PostProcess():
                 base_x = average
             for j in range(seperator[i - 1], seperator[i]):
                 text_areas.text_areas_x[j].append(average)
+
+        for i in range(seperator[0], seperator[1]):
+            item = text_areas.text_areas_x[i]
+            item.append(TextAreas.get_y(item))
+
+        for i in range(2, len(seperator)): # from second col
+            for j in range(seperator[i - 1], seperator[i]): # for each item in second col
+                item = text_areas.text_areas_x[j]
+                min_dist = 10e8
+                min_idx = 0
+                for k in range(seperator[0], seperator[i - 1]): # from first col to i - 1 th col
+                    item2 = text_areas.text_areas_x[k]
+                    delta_y = abs(TextAreas.get_y(item2) - TextAreas.get_y(item))
+                    if (delta_y < min_dist):
+                        min_dist = delta_y
+                        min_idx = k
+                if (min_dist < features[1]):
+                    item2 = text_areas.text_areas_x[min_idx]
+                    item.append(item2[10])
+                else:
+                    item.append(TextAreas.get_y(item))
+
+        
         for i in range(len(text_areas.text_areas)):
             elem = text_areas.text_areas_x[i]
-            delta = elem[0] - base_x
-            elem.append(elem[1] - delta * features[3])
+            # delta = elem[0] - base_x
+            # elem.append(elem[1] - delta * features[3])
             new_img = ft.draw_text(new_img, 
-                                   (text_areas.text_areas[9], text_areas.text_areas[10]), 
-                                   text_areas.text_areas[8], 
+                                   (int(elem[9]), int(elem[10])), 
+                                   elem[8], 
                                    text_size, color_)
-        cv2.imwrite(os.path.join('tmp', 'image'), new_img)
+        cv2.imwrite(os.path.join('tmp', 'image2.jpg'), new_img)
         print ''
 
 
