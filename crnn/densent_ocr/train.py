@@ -19,7 +19,6 @@ from keras import losses
 from keras.layers.wrappers import TimeDistributed
 from keras.callbacks import EarlyStopping,ModelCheckpoint,TensorBoard
 from keras.utils import plot_model
-from matplotlib import pyplot as plt
 import tensorflow as tf  
 
 import numpy as np 
@@ -55,7 +54,8 @@ def ctc_lambda_func(args):
 
 
 char=''
-with open('/datasets/TextRecognitionDataGenerator/TextRecognitionDataGenerator/dicts/cn.txt',encoding='utf-8') as f:
+#with open('/datasets/TextRecognitionDataGenerator/TextRecognitionDataGenerator/dicts/cn.txt',encoding='utf-8') as f:
+with open('../../../text_renderer-dev/data/chars/med.txt',encoding='utf-8') as f:
       for ch in f.readlines():
             ch = ch.strip()
             char=char+ch
@@ -170,7 +170,7 @@ def gen3(trainfilelist,batchsize=64,maxlabellength=10,imagesize=(32,280)):
 
 input = Input(shape=(img_h,None,1),name='the_input')
 
-y_pred= densenet.dense_cnn(input,nclass)
+y_pred= densenet.dense_cnn(input,nclass, name='new_out')
 
 basemodel = Model(inputs=input,outputs=y_pred)
 basemodel.summary()
@@ -189,36 +189,33 @@ adam = Adam()
 model.compile(loss={'ctc': lambda y_true, y_pred: y_pred}, optimizer=adam,metrics=['accuracy'])
 
 
-checkpoint = ModelCheckpoint(r'../keras_ocr_model/weights5-densent-{epoch:02d}.hdf5',
+checkpoint = ModelCheckpoint(r'../../../keras_ocr_model/weights1-densent-{epoch:02d}.hdf5',
                              #save_weights_only=False,
                              save_best_only=True)
 earlystop = EarlyStopping(patience=10)
-tensorboard = TensorBoard(r'../keras_ocr_model/tflog-densent5',write_graph=True)
+tensorboard = TensorBoard(r'../../../keras_ocr_model/tflog-densent5',write_graph=True)
 
 print('-----------beginfit--')
 with tf.Session() as sess:
-    cc1=gen3([r'/datasets/text_renderer/train1/default/tmp_labels_id.txt'
+    cc1=gen3([r'../../../text_renderer-dev/train1/default/tmp_labels_id.txt'
               #r'/datasets/TextRecognitionDataGenerator/TextRecognitionDataGenerator/train1.txt',
               #r'/datasets/TextRecognitionDataGenerator/TextRecognitionDataGenerator/train2.txt'
               ],
               batchsize=batch_size,maxlabellength=maxlabellength,imagesize=(img_h,img_w))
-    cc2=gen3([r'/datasets/text_renderer/val1/default/tmp_labels_id.txt'],batchsize=batch_size,maxlabellength=maxlabellength,imagesize=(img_h,img_w))
+    cc2=gen3([r'../../../text_renderer-dev/val1/default/tmp_labels_id.txt'],batchsize=batch_size,maxlabellength=maxlabellength,imagesize=(img_h,img_w))
 
 # fine tune
-#from keras.models import load_model
-#prev_model = load_model(r'../keras_ocr_model/weights4-densent-12.hdf5')
-#new_model = Sequential()
-#new_model.add(prev_model)
-#new_model.layers.pop()
-#new_model.outputs = [model.layers[-1].output]
-#model.layers[-1].outbound_nodes = []
-#new_model.add(Dense(nclass, activation='softmax', name='out'))
+from keras.models import load_model
+from keras.models import Sequential
+custom_objects = {'<lambda>': lambda y_true, y_pred: y_pred}
+
+model.load_weights(r'../../../keras_ocr_model/weights9-densent-10.hdf5', by_name=True)
 
 res = model.fit_generator(cc1,
-                    steps_per_epoch = 1123456// batch_size,
+                    steps_per_epoch = 300000// batch_size,
                     epochs = 100,
                     validation_data =cc2 ,
-                    validation_steps = 364400// batch_size,
+                    validation_steps = 1000// batch_size,
                     callbacks =[earlystop,checkpoint,tensorboard],
                     verbose=1
                     )
